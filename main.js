@@ -1,18 +1,31 @@
-
-function registrarMascota() {
+async function registrarMascota() {
     let nombre = prompt("Ingrese el nombre de la mascota:");
-    let especie = (prompt("Ingrese la especie (Perro, Gato, etc.):"));
+    let especie = prompt("Ingrese la especie (Perro, Gato, etc.):");
     let edad = parseInt(prompt("Ingrese la edad de la mascota:"));
     let peso = parseFloat(prompt("Ingrese el peso de la mascota en kg:"));
     let estado = validarEntrada(prompt("Ingrese el estado de salud (Sano, Enfermo, En tratamiento):"), ["Sano", "Enfermo", "En tratamiento"]);
 
-    delay(2000, () => {
-        mascotas.push({ nombre, especie, edad, peso, estado });
-        alert(`Mascota "${nombre}" registrada con éxito.`);
-    });
+    alert("Registrando mascota... ⏳");
+    await delayPromise(2000); 
+    mascotas.push({ nombre, especie, edad, peso, estado });
+
+    localStorage.setItem("mascotas", JSON.stringify(mascotas));
+    alert(`Mascota "${nombre}" registrada con éxito.`);
 }
 
-function menu() {
+function listarMascotas() {
+    if (mascotas.length === 0) {
+        alert("No hay mascotas registradas.");
+        return;
+    }
+
+    let lista = "Mascotas registradas:\n";
+    mascotas.forEach(m => {
+        lista += `🐾 ${m.nombre} - ${m.especie} - ${m.edad} años - ${m.peso} kg - Estado: ${m.estado}\n`;
+    });
+    alert(lista);
+}
+async function menu() {
     let opcion;
     do {
         opcion = prompt(`📋 Menú Veterinaria
@@ -26,7 +39,7 @@ Seleccione una opción:`);
 
         switch (opcion) {
             case "1":
-                registrarMascota();
+                await registrarMascota();
                 break;
             case "2":
                 listarMascotas();
