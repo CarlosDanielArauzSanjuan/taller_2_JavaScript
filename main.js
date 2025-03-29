@@ -1,88 +1,52 @@
-let pets = [
-    {
-        name: "firulai",
-        species: "Dog",
-        age: 5,
-        weight: 12,
-        healthStatus: "Healthy"
-    }   
-]
 
-const register = (callback) =>{
-    let name = prompt("Type your pets name")
-    let species = prompt("Type your pets species")
-    let age = parseInt(prompt("Type your pets age"))
-    let weight = parseFloat(prompt("Type your pets weight")) 
-    let healthStatus = prompt("Type your pets health status (Healthy, In treatment or Sick)")
-    pets.push({name, species, age, weight, healthStatus})
-    console.log("Registering pet, please wait...")
+function registrarMascota() {
+    let nombre = prompt("Ingrese el nombre de la mascota:");
+    let especie = (prompt("Ingrese la especie (Perro, Gato, etc.):"));
+    let edad = parseInt(prompt("Ingrese la edad de la mascota:"));
+    let peso = parseFloat(prompt("Ingrese el peso de la mascota en kg:"));
+    let estado = validarEntrada(prompt("Ingrese el estado de salud (Sano, Enfermo, En tratamiento):"), ["Sano", "Enfermo", "En tratamiento"]);
 
-    setTimeout(function(){
-        alert("Registration succesfully done")
-        callback()
-    }, 2000);    
+    delay(2000, () => {
+        mascotas.push({ nombre, especie, edad, peso, estado });
+        alert(`Mascota "${nombre}" registrada con éxito.`);
+    });
 }
 
-const listPet = () =>{
-    if(pets.length === 0){
-        alert("Theres no pet registered")
-        return
-    }
-
-    let list = ""
-    pets.forEach((p, index) => {
-        list += `${index + 1}. Name: ${p.name},\n Species: ${p.species},\n Age: ${p.age},\n Weight: ${p.weight},\n Health Status: ${p.healthStatus}\n` 
-    })  
-    alert(list)
-}
-
-const searchPet = () =>{
-
-    let name = prompt("Type pets name to look for");
-    let pet = pets.find(m => m.name.toLowerCase() === name.toLowerCase());
-    if (pet) {
-        alert(`Pet found: \nName: ${pet.name}\nSpecies: ${pet.species}\nAge: ${pet.age} years\nWeight: ${pet.weight}kg\nHealth Status: ${pet.healthStatus}`);
-    } else {
-        alert("Not pet found.");
-    }
-}
-
-const updateHealthStatus = () => {
-    let name = prompt("Type pets name to update");
-    let pet = pets.find(p => p.name.toLowerCase() === name.toLowerCase());
-    if (pet) {
-        pet.healthStatus = prompt("Enter the new status (Healthy, Sick, In treatment):");
-        alert("health status succesfuly updated");
-    } else {
-        alert("Not pet found.");
-    }
-}
-
-const deletePet = () => {
-    let name = prompt("Type pets name to delete");
-    let ind = pets.findIndex(p => p.name.toLowerCase() === name.toLowerCase());
-    if (ind !== -1) {
-        pets.splice(ind, 1);
-        alert("Succesfuly deleted");
-    } else {
-        alert("Not pet found.");
-    }
-}
-
-const menu = () => {
-    let option;
+function menu() {
+    let opcion;
     do {
-        option = prompt("Choose an option:\n1. Register pet\n2. List \n3. Search pet\n4. Change a pet's health status \n5. Delete pet\n6. Leave");
-        switch (option) {
-            case "1": register("function"); break;
-            case "2": listPet(); break;
-            case "3": searchPet(); break;
-            case "4": updateHealthStatus(); break;
-            case "5": deletePet(); break;
-            case "6": break;
-            default: alert("No valid option. Try again.");
+        opcion = prompt(`📋 Menú Veterinaria
+1. Registrar nueva mascota
+2. Listar mascotas
+3. Buscar mascota
+4. Actualizar estado de salud
+5. Eliminar mascota
+6. Salir
+Seleccione una opción:`);
+
+        switch (opcion) {
+            case "1":
+                registrarMascota();
+                break;
+            case "2":
+                listarMascotas();
+                break;
+            case "3":
+                buscarMascota();
+                break;
+            case "4":
+                actualizarEstadoSalud();
+                break;
+            case "5":
+                eliminarMascota();
+                break;
+            case "6":
+                alert("Saliendo del sistema...");
+                break;
+            default:
+                alert("Opción inválida. Intente de nuevo.");
         }
-    } while (option !== "6");
-};
+    } while (opcion !== "6");
+}
 
 menu();
